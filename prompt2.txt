@@ -1,0 +1,27 @@
+Contexte :
+Projet Spring Boot "NOTY". Je dois créer un service de calcul de note finale dynamique.
+
+Logique de calcul stricte :
+
+Récupération : Liste des notes (Double) pour un candidat et une matière.
+
+Somme des différences absolues : Comparer chaque note avec toutes les autres.
+
+Formule : Somme de |note_A - note_B| pour toutes les paires distinctes.
+
+Cas particuliers : Si le candidat n'a qu'une seule note ou si toutes ses notes sont identiques (ex: 15, 15, 15), la somme doit être 0.
+
+Comparaison : Récupérer le Parametre de la matière. Comparer la somme obtenue avec parametre.nombredifference selon le Signe (ID 1: >, ID 2: <).
+
+Action : Si la condition est vraie, appliquer l'action (ID 1: min, ID 2: max, ID 3: moyenne). Si la condition est fausse, définir une valeur par défaut (par exemple la moyenne).
+
+Contraintes techniques :
+
+Utiliser Math.abs() pour les calculs.
+
+Utiliser les Streams Java pour la propreté du code.
+
+Sortie : Ne pas enregistrer en base. Le Controller doit simplement envoyer le résultat final vers une vue resultat.html.
+
+Livrables :
+Peux-tu me générer le NoteService.java avec une gestion d'erreur si aucune note n'est trouvée, et le NoteController.java associé ?

@@ -1,0 +1,53 @@
+# Walkthrough — Projet Spring Boot JPA + JSP + PostgreSQL
+
+## Résumé
+
+Projet Spring Boot complet créé avec architecture en couches, connecté à PostgreSQL, avec affichage JSP.
+
+## Fichiers créés (29 fichiers Java + 7 JSP)
+
+### Configuration
+| Fichier | Description |
+|---------|-------------|
+| [pom.xml](file:///d:/FIANARANA/S6/MR%20NAINA/NOTY/pom.xml) | Maven, Spring Boot 3.2.3, JPA, PostgreSQL, JSP/JSTL |
+| [application.properties](file:///d:/FIANARANA/S6/MR%20NAINA/NOTY/src/main/resources/application.properties) | Connexion PostgreSQL (`noty`, user `postgres`, mdp `123`) |
+| [NotyApplication.java](file:///d:/FIANARANA/S6/MR%20NAINA/NOTY/src/main/java/com/noty/NotyApplication.java) | Classe principale |
+
+### Models (7 entités JPA)
+[Candidat](file:///d:/FIANARANA/S6/MR%20NAINA/NOTY/src/main/java/com/noty/model/Candidat.java#5-35), [Matiere](file:///d:/FIANARANA/S6/MR%20NAINA/NOTY/src/main/java/com/noty/model/Matiere.java#5-35), [Prof](file:///d:/FIANARANA/S6/MR%20NAINA/NOTY/src/main/java/com/noty/model/Prof.java#5-28), [Signe](file:///d:/FIANARANA/S6/MR%20NAINA/NOTY/src/main/java/com/noty/model/Signe.java#5-28), [Action](file:///d:/FIANARANA/S6/MR%20NAINA/NOTY/src/main/java/com/noty/model/Action.java#5-28), [Note](file:///d:/FIANARANA/S6/MR%20NAINA/NOTY/src/main/java/com/noty/model/Note.java#5-52) (→ Candidat, Prof, Matiere), [Paramettre](file:///d:/FIANARANA/S6/MR%20NAINA/NOTY/src/main/java/com/noty/model/Paramettre.java#5-60) (→ Candidat, Matiere, Signe, Action)
+
+### Repository → Service → Controller
+Chaque entité a son Repository (JpaRepository), Service (CRUD), et Controller (GET/POST + JSP).
+
+### Vues JSP (7 pages)
+Chaque page contient : navigation, formulaire d'ajout, tableau de liste, et bouton supprimer.
+
+## Vérification
+
+```
+mvn clean compile → BUILD SUCCESS (29 source files compiled)
+```
+
+## Pour lancer le projet
+
+1. Créer la base de données PostgreSQL :
+```sql
+CREATE DATABASE noty;
+```
+2. Lancer le projet :
+```bash
+cd d:\FIANARANA\S6\MR NAINA\NOTY
+mvn spring-boot:run
+```
+3. Accéder à : **http://localhost:8080/candidats**
+
+## URLs disponibles
+| URL | Page |
+|-----|------|
+| `/candidats` | Gestion des candidats |
+| `/matieres` | Gestion des matières |
+| `/profs` | Gestion des professeurs |
+| `/signes` | Gestion des signes |
+| `/actions` | Gestion des actions |
+| `/notes` | Gestion des notes |
+| `/paramettres` | Gestion des paramètres |
