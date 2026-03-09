@@ -40,3 +40,4 @@ CREATE TABLE Paramettre (
     idsigne INT REFERENCES Signe(id),
     idaction INT REFERENCES Action(id)
 );
+-- vita
