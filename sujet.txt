@@ -1,0 +1,26 @@
+Nouvelle fonctionnalité — Résolution de conflits entre conditions
+Lorsque plusieurs conditions sont satisfaites simultanément, on applique la règle de proximité pour déterminer laquelle a la priorité.
+Règle de proximité : Pour une valeur donnée, parmi toutes les conditions satisfaites, on calcule la distance entre la valeur et le seuil de chaque condition. La condition dont le seuil est le plus proche de la valeur est celle qui s'applique.
+En cas d'égalité de distance, on privilégie la condition avec le seuil le plus petit.
+Cette règle s'applique quel que soit le nombre de conditions satisfaites (2, 3 ou plus).
+Consignes d'implémentation :
+
+Séparer la logique en petites fonctions simples, chacune avec une seule responsabilité (ex: une fonction pour filtrer les conditions satisfaites, une pour calculer la distance, une pour résoudre le conflit).
+Privilégier le code le plus simple possible : pas de sur-ingénierie, pas d'optimisation prématurée, noms de variables clairs.
+
+
+Exemples :
+Scénario 1 :
+
+> 8 → petit
+> 5 → grand
+Valeur = 6
+
+Les deux conditions sont satisfaites. Distance à 8 = 2, distance à 5 = 1. On choisit > 5 (plus proche) → grand
+Scénario 2 :
+
+> 8 → petit
+> 6 → grand
+Valeur = 7
+
+Les deux conditions sont satisfaites. Distance à 8 = 1, distance à 6 = 1. Égalité → on prend le seuil le plus petit, donc > 6 → grand
