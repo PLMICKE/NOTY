@@ -48,3 +48,4 @@ CREATE TABLE demande_status (
     idstatus INT NOT NULL REFERENCES status(id),
     date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
