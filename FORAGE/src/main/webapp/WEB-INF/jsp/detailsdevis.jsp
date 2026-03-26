@@ -3,18 +3,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Demandes</title>
+    <title>Détails Devis</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
         h1 { color: #333; }
         table { border-collapse: collapse; width: 100%; margin-top: 20px; background: white; }
         th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
-        th { background-color: #2196F3; color: white; }
+        th { background-color: #795548; color: white; }
         tr:hover { background-color: #f1f1f1; }
         form { background: white; padding: 20px; border-radius: 5px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        input[type="text"], input[type="date"], select { padding: 8px; margin: 5px; border: 1px solid #ddd; border-radius: 3px; }
-        input[type="submit"] { padding: 8px 20px; background: #2196F3; color: white; border: none; border-radius: 3px; cursor: pointer; }
-        input[type="submit"]:hover { background: #1976D2; }
+        input[type="text"], input[type="number"], select { padding: 8px; margin: 5px; border: 1px solid #ddd; border-radius: 3px; }
+        input[type="submit"] { padding: 8px 20px; background: #795548; color: white; border: none; border-radius: 3px; cursor: pointer; }
+        input[type="submit"]:hover { background: #5D4037; }
         a { color: #e74c3c; text-decoration: none; }
         a:hover { text-decoration: underline; }
         .nav { margin-bottom: 20px; }
@@ -32,27 +32,24 @@
         <a href="/demandestatus">Demande Status</a>
     </div>
 
-    <h1>Liste des Demandes</h1>
+    <h1>Liste des Détails Devis</h1>
 
-    <form action="/demandes" method="post">
-        <input type="hidden" name="id" value="${demande.id}" />
+    <form action="/detailsdevis" method="post">
+        <input type="hidden" name="id" value="${detailsDevis.id}" />
 
-        <label>Date:</label>
-        <input type="date" name="date" value="${demande.date}" required />
-
-        <label>Client:</label>
-        <select name="client.id" required>
+        <label>Devis:</label>
+        <select name="devis.id" required>
             <option value="">-- Choisir --</option>
-            <c:forEach var="c" items="${clients}">
-                <option value="${c.id}">${c.nom}</option>
+            <c:forEach var="dv" items="${devisList}">
+                <option value="${dv.id}">Devis #${dv.id} - ${dv.montantTotal}</option>
             </c:forEach>
         </select>
 
-        <label>Lieu:</label>
-        <input type="text" name="lieu" value="${demande.lieu}" />
+        <label>Libellé:</label>
+        <input type="text" name="libelle" value="${detailsDevis.libelle}" />
 
-        <label>Districk:</label>
-        <input type="text" name="districk" value="${demande.districk}" />
+        <label>Montant:</label>
+        <input type="number" step="0.01" name="montant" required />
 
         <input type="submit" value="Enregistrer" />
     </form>
@@ -60,20 +57,18 @@
     <table>
         <tr>
             <th>ID</th>
-            <th>Date</th>
-            <th>Client</th>
-            <th>Lieu</th>
-            <th>Districk</th>
+            <th>Devis</th>
+            <th>Libellé</th>
+            <th>Montant</th>
             <th>Action</th>
         </tr>
-        <c:forEach var="d" items="${demandes}">
+        <c:forEach var="dd" items="${detailsDevisList}">
             <tr>
-                <td>${d.id}</td>
-                <td>${d.date}</td>
-                <td>${d.client.nom}</td>
-                <td>${d.lieu}</td>
-                <td>${d.districk}</td>
-                <td><a href="/demandes/delete/${d.id}" onclick="return confirm('Supprimer?')">Supprimer</a></td>
+                <td>${dd.id}</td>
+                <td>Devis #${dd.devis.id}</td>
+                <td>${dd.libelle}</td>
+                <td>${dd.montant}</td>
+                <td><a href="/detailsdevis/delete/${dd.id}" onclick="return confirm('Supprimer?')">Supprimer</a></td>
             </tr>
         </c:forEach>
     </table>
