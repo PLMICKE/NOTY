@@ -58,15 +58,15 @@ public class DevisService {
             detailsDevisRepository.save(ligne);
         }
 
-        // 3. Insérer dans demande_status (idstatus = 1)
-        Status statusCree = statusRepository.findById(1).orElse(null);
-        if (statusCree != null) {
-            DemandeStatus ds = new DemandeStatus();
-            ds.setDemande(savedDevis.getDemande());
-            ds.setStatus(statusCree);
-            ds.setDate(LocalDateTime.now());
-            demandeStatusRepository.save(ds);
-        }
+        // // 3. Insérer dans demande_status (idstatus = 1)
+        // Status statusCree = statusRepository.findById(1).orElse(null);
+        // if (statusCree != null) {
+        //     DemandeStatus ds = new DemandeStatus();
+        //     ds.setDemande(savedDevis.getDemande());
+        //     ds.setStatus(statusCree);
+        //     ds.setDate(LocalDateTime.now());
+        //     demandeStatusRepository.save(ds);
+        // }
 
         return savedDevis;
     }

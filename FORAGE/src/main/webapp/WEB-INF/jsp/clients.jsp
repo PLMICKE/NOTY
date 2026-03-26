@@ -57,7 +57,7 @@
                 <td>${c.contact}</td>
                 <td><a href="/clients/delete/${c.id}" onclick="return confirm('Supprimer?')">Supprimer</a></td>
             </tr>
-        </c:forEach>
+        </c:forEach>    
     </table>
 </body>
 </html>
