@@ -30,6 +30,7 @@
         <a href="/detailsdevis">Détails Devis</a>
         <a href="/status">Status</a>
         <a href="/demandestatus">Demande Status</a>
+        <a href="/detailsdevis/somme">chiffre d affaire</a>
     </div>
 
     <h1>Liste des Demandes</h1>
@@ -53,6 +54,9 @@
 
         <label>Districk:</label>
         <input type="text" name="districk" value="${demande.districk}" />
+
+        <label>Observation:</label>
+        <input type="text" name="observation" placeholder="Observation (optionnel)" style="width: 250px;" />
 
         <input type="submit" value="Enregistrer" />
     </form>

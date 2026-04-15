@@ -24,6 +24,7 @@ public class TypeDevisController {
     @PostMapping
     public String save(@ModelAttribute TypeDevis typeDevis) {
         typeDevisService.save(typeDevis);
+        // Exception et RuntimeException
         return "redirect:/typedevis";
     }
 

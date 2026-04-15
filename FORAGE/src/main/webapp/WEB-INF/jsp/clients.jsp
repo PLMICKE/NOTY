@@ -30,6 +30,7 @@
         <a href="/detailsdevis">Détails Devis</a>
         <a href="/status">Status</a>
         <a href="/demandestatus">Demande Status</a>
+        <a href="/detailsdevis/somme">chiffre d affaire</a>
     </div>
 
     <h1>Liste des Clients</h1>
@@ -57,7 +58,7 @@
                 <td>${c.contact}</td>
                 <td><a href="/clients/delete/${c.id}" onclick="return confirm('Supprimer?')">Supprimer</a></td>
             </tr>
-        </c:forEach>
+        </c:forEach>    
     </table>
 </body>
 </html>

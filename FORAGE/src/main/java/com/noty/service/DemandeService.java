@@ -1,18 +1,30 @@
 package com.noty.service;
 
-import com.noty.model.Demande;
-import com.noty.repository.DemandeRepository;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import com.noty.model.Demande;
+import com.noty.model.DemandeStatus;
+import com.noty.repository.DemandeRepository;
+
+import com.noty.model.Status;
 
 @Service
 public class DemandeService {
 
     @Autowired
     private DemandeRepository demandeRepository;
+
+    @Autowired
+    private DemandeStatusService demandeStatusService;
+
+    @Autowired
+    private StatusService statusService;
+
 
     public List<Demande> findAll() {
         return demandeRepository.findAll();
@@ -22,8 +34,15 @@ public class DemandeService {
         return demandeRepository.findById(id);
     }
 
-    public Demande save(Demande demande) {
-        return demandeRepository.save(demande);
+    public Demande save(Demande demande, String observation) {
+        if (observation == null || observation.trim().isEmpty()) {
+            observation = "pas d'observation";
+        }
+        Demande newDemande = demandeRepository.save(demande);
+        Status statutCreate = statusService.findById(1).get();
+        DemandeStatus newDemandeStatus = new DemandeStatus(newDemande, statutCreate, LocalDateTime.now(), observation);
+        demandeStatusService.save(newDemandeStatus);
+        return newDemande;
     }
 
     public void deleteById(int id) {

@@ -1,0 +1,30 @@
+package com.noty.repository;
+
+import com.noty.model.TypeDevis;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
+
+@Repository
+public interface TypeDevisRepository extends JpaRepository<TypeDevis, Integer> {
+
+    // 1. La "Recette" : On définit la requête SQL/JPQL
+    @Query("SELECT t FROM TypeDevis t WHERE t.id = :id + 1")
+    Optional<TypeDevis> findNextInDb(@Param("id") int id);
+
+    // 2. La "Fonction DAO" : On récupère, on stocke dans valiny et on print
+    default TypeDevis getByIdPlusOne(int id) {
+        // On récupère le résultat de la requête ci-dessus dans la variable valiny
+        // .orElse(null) permet d'éviter l'erreur si l'ID n'existe pas
+        TypeDevis valiny = findNextInDb(id).orElse(null);
+
+        // On print valiny comme tu voulais
+        System.out.println("Valeur de valiny : " + valiny);
+
+        // On retourne le résultat
+        return valiny;
+    }
+}

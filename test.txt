@@ -1,0 +1,6 @@
+on dois ajouter observation dans  Demande Status (de type varchar) qui peut contenir des phrase 
+donc quand on cree une demande on cree deja une  Demande Status avec statut 1 (cree)
+et quand on cree un devis pour une demande , on cree  Demande Status avec statut 2 ou 3 
+(devis preetude,devis forage)
+donc maintenant on mets aussi un input text dans le formulaire de creation de demande et dans le formulaire de creation de devis
+puis ajuste le code (controlleur...) pour prendre en compte obseration , si input observation vide alors on stock "pas d`observation"

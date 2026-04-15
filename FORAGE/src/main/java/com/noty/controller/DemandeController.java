@@ -27,8 +27,9 @@ public class DemandeController {
     }
 
     @PostMapping
-    public String save(@ModelAttribute Demande demande) {
-        demandeService.save(demande);
+    public String save(@ModelAttribute Demande demande,
+                       @RequestParam(value = "observation", required = false) String observation) {
+        demandeService.save(demande, observation);
         return "redirect:/demandes";
     }
 

@@ -3,6 +3,9 @@ package com.noty.controller;
 import com.noty.model.DetailsDevis;
 import com.noty.service.DetailsDevisService;
 import com.noty.service.DevisService;
+
+import java.math.BigDecimal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,7 +14,16 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/detailsdevis")
 public class DetailsDevisController {
-
+    @GetMapping("/somme")
+    public String getsommeMontantDetailsDevis(Model model){
+        BigDecimal a = new BigDecimal(0);
+        for (DetailsDevis detailsDevis : detailsDevisService.findAll()) {
+            a = a.add(detailsDevis.getMontant());
+        }
+        model.addAttribute("somme", a);
+        return "somme";
+    }   
+     
     @Autowired
     private DetailsDevisService detailsDevisService;
 
