@@ -26,20 +26,23 @@ public class DevisController {
 
     @Autowired
     private DemandeService demandeService;
+    double limite = 1000000;
+    double remise = 10;
 
     @GetMapping
     public String list(Model model) {
         model.addAttribute("devisList", devisService.findAll());
         model.addAttribute("devis", new Devis());
         model.addAttribute("typedevisList", typeDevisService.findAll());
-        model.addAttribute("demandes", demandeService.findAll());
         return "devis";
     }
 
     @PostMapping
     public String save(@ModelAttribute Devis devis,
-                       @RequestParam("ligneLibelle") List<String> libelles,
-                       @RequestParam("ligneMontant") List<String> montants) {
+            @RequestParam("ligneLibelle") List<String> libelles,
+            @RequestParam("ligneMontant") List<String> montants,
+            @RequestParam("ligneQuantite") List<String> quantites,
+            @RequestParam(value = "observation", required = false) String observation) {
 
         List<DetailsDevis> lignes = new ArrayList<>();
         BigDecimal total = BigDecimal.ZERO;
@@ -47,18 +50,33 @@ public class DevisController {
         for (int i = 0; i < libelles.size(); i++) {
             String lib = libelles.get(i);
             String mont = montants.get(i);
-            if (lib != null && !lib.trim().isEmpty() && mont != null && !mont.trim().isEmpty()) {
+            String qteStr = quantites.get(i);
+            
+            if (lib != null && !lib.trim().isEmpty() && mont != null && !mont.trim().isEmpty() && qteStr != null && !qteStr.trim().isEmpty()) {
+                Double montDouble = Double.parseDouble(mont.trim());
+                int qte = Integer.parseInt(qteStr.trim());
+
+                // Appliquer la remise si le montant unitaire atteint ou dépasse la limite
+                if (montDouble >= limite) {
+                    montDouble = montDouble - ((remise * montDouble) / 100.0);
+                }
+
                 DetailsDevis detail = new DetailsDevis();
                 detail.setLibelle(lib.trim());
-                BigDecimal montant = new BigDecimal(mont.trim());
-                detail.setMontant(montant);
-                total = total.add(montant);
+                BigDecimal montantFinal = BigDecimal.valueOf(montDouble).multiply(BigDecimal.valueOf(qte));
+                detail.setMontant(montantFinal);
+                detail.setQuantite(qte);
+                
+                // Calcul du total pour cette ligne : montant * quantité
+                BigDecimal totalLigne = montantFinal.multiply(BigDecimal.valueOf(qte));
+                total = total.add(totalLigne);
+                
                 lignes.add(detail);
             }
         }
 
         devis.setMontantTotal(total);
-        devisService.creerDevisComplet(devis, lignes);
+        devisService.creerDevisComplet(devis, lignes, observation);
         return "redirect:/devis";
     }
 

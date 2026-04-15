@@ -11,3 +11,21 @@
    *  manao rapport final
 
 besoin => devis => etude => devis forage => (ovina no nanomboka) (ovina nahazo rano) (vita test sanitaire)
+
+
+status global:
+  cree
+  devis proposer
+  devis accepter
+  devis reffuser
+  etude proposer
+  etude accepter
+  etude reffuser
+
+
+Demande
+devis proposer
+
+devis Etude
+devis Travaux
+Statut

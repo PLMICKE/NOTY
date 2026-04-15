@@ -1,10 +1,10 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Status</title>
-    <style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+        <style>
         body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
         h1 { color: #333; }
         table { border-collapse: collapse; width: 100%; margin-top: 20px; background: white; }
@@ -27,34 +27,12 @@
         <a href="/demandes">Demandes</a>
         <a href="/typedevis">Types Devis</a>
         <a href="/devis">Devis</a>
-        <a href="/detailsdevis">Détails Devis</a>
+        <a href="/detailsdevis">Details Devis</a>
         <a href="/status">Status</a>
         <a href="/demandestatus">Demande Status</a>
         <a href="/detailsdevis/somme">chiffre d affaire</a>
     </div>
-
-    <h1>Liste des Status</h1>
-
-    <form action="/status" method="post">
-        <input type="hidden" name="id" value="${status.id}" />
-        <label>Libellé:</label>
-        <input type="text" name="libelle" value="${status.libelle}" required />
-        <input type="submit" value="Enregistrer" />
-    </form>
-
-    <table>
-        <tr>
-            <th>ID</th>
-            <th>Libellé</th>
-            <th>Action</th>
-        </tr>
-        <c:forEach var="s" items="${statusList}">
-            <tr>
-                <td>${s.id}</td>
-                <td>${s.libelle}</td>
-                <td><a href="/status/delete/${s.id}" onclick="return confirm('Supprimer?')">Supprimer</a></td>
-            </tr>
-        </c:forEach>
-    </table>
+    <h1>total du montant des devis(chiffre d affaire)</h1>
+    <p>${somme}</p>
 </body>
 </html>

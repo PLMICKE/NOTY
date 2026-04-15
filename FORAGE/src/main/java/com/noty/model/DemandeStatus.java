@@ -22,12 +22,16 @@ public class DemandeStatus {
     @Column
     private LocalDateTime date;
 
+    @Column(length = 500)
+    private String observation;
+
     public DemandeStatus() {}
 
-    public DemandeStatus(Demande demande, Status status, LocalDateTime date) {
+    public DemandeStatus(Demande demande, Status status, LocalDateTime date, String observation) {
         this.demande = demande;
         this.status = status;
         this.date = date;
+        this.observation = observation;
     }
 
     public int getId() { return id; }
@@ -41,4 +45,7 @@ public class DemandeStatus {
 
     public LocalDateTime getDate() { return date; }
     public void setDate(LocalDateTime date) { this.date = date; }
+
+    public String getObservation() { return observation; }
+    public void setObservation(String observation) { this.observation = observation; }
 }

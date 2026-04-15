@@ -30,6 +30,7 @@
         <a href="/detailsdevis">Détails Devis</a>
         <a href="/status">Status</a>
         <a href="/demandestatus">Demande Status</a>
+        <a href="/detailsdevis/somme">chiffre d affaire</a>
     </div>
 
     <h1>Suivi des Demandes (Status)</h1>
@@ -56,6 +57,9 @@
         <label>Date:</label>
         <input type="datetime-local" name="date" />
 
+        <label>Observation:</label>
+        <input type="text" name="observation" placeholder="Observation (optionnel)" style="width: 300px;" />
+
         <input type="submit" value="Enregistrer" />
     </form>
 
@@ -65,6 +69,7 @@
             <th>Demande</th>
             <th>Status</th>
             <th>Date</th>
+            <th>Observation</th>
             <th>Action</th>
         </tr>
         <c:forEach var="ds" items="${demandeStatusList}">
@@ -73,6 +78,7 @@
                 <td>${ds.demande.lieu} - ${ds.demande.date}</td>
                 <td>${ds.status.libelle}</td>
                 <td>${ds.date}</td>
+                <td>${ds.observation}</td>
                 <td><a href="/demandestatus/delete/${ds.id}" onclick="return confirm('Supprimer?')">Supprimer</a></td>
             </tr>
         </c:forEach>

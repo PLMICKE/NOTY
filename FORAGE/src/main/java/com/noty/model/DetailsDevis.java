@@ -21,12 +21,16 @@ public class DetailsDevis {
     @Column(nullable = false, precision = 15, scale = 2)
     private BigDecimal montant;
 
+    @Column(nullable = false)
+    private int quantite;
+
     public DetailsDevis() {}
 
-    public DetailsDevis(Devis devis, String libelle, BigDecimal montant) {
+    public DetailsDevis(Devis devis, String libelle, BigDecimal montant, int quantite) {
         this.devis = devis;
         this.libelle = libelle;
         this.montant = montant;
+        this.quantite = quantite;
     }
 
     public int getId() { return id; }
@@ -40,4 +44,7 @@ public class DetailsDevis {
 
     public BigDecimal getMontant() { return montant; }
     public void setMontant(BigDecimal montant) { this.montant = montant; }
+
+    public int getQuantite() { return quantite; }
+    public void setQuantite(int quantite) { this.quantite = quantite; }
 }

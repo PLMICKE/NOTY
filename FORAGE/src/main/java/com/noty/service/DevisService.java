@@ -4,10 +4,12 @@ import com.noty.model.Devis;
 import com.noty.model.DetailsDevis;
 import com.noty.model.DemandeStatus;
 import com.noty.model.Status;
+import com.noty.model.TypeDevis;
 import com.noty.repository.DevisRepository;
 import com.noty.repository.DetailsDevisRepository;
 import com.noty.repository.DemandeStatusRepository;
 import com.noty.repository.StatusRepository;
+import com.noty.repository.TypeDevisRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +33,9 @@ public class DevisService {
     @Autowired
     private StatusRepository statusRepository;
 
+    @Autowired
+    private TypeDevisRepository typeDevisRepository;
+
     public List<Devis> findAll() {
         return devisRepository.findAll();
     }
@@ -48,7 +53,12 @@ public class DevisService {
     }
 
     @Transactional
-    public Devis creerDevisComplet(Devis devis, List<DetailsDevis> lignes) {
+    public Devis creerDevisComplet(Devis devis, List<DetailsDevis> lignes, String observation) {
+        // Default observation
+        if (observation == null || observation.trim().isEmpty()) {
+            observation = "pas d'observation";
+        }
+
         // 1. Sauvegarder le devis
         Devis savedDevis = devisRepository.save(devis);
 
@@ -58,15 +68,24 @@ public class DevisService {
             detailsDevisRepository.save(ligne);
         }
 
-        // // 3. Insérer dans demande_status (idstatus = 1)
-        // Status statusCree = statusRepository.findById(1).orElse(null);
-        // if (statusCree != null) {
-        //     DemandeStatus ds = new DemandeStatus();
-        //     ds.setDemande(savedDevis.getDemande());
-        //     ds.setStatus(statusCree);
-        //     ds.setDate(LocalDateTime.now());
-        //     demandeStatusRepository.save(ds);
-        // }
+        // 3. Récupérer le vrai TypeDevis depuis la BDD (le formulaire n'envoie que l'id, libelle est null)
+        TypeDevis typeDevis = typeDevisRepository.findById(devis.getTypeDevis().getId()).orElse(null);
+
+        Status statusCree;
+        if (typeDevis != null && "preetude".equals(typeDevis.getLibelle())) {
+            statusCree = statusRepository.findById(2).orElse(null);
+        } else {
+            statusCree = statusRepository.findById(3).orElse(null);
+        }
+        
+        if (statusCree != null) {
+            DemandeStatus ds = new DemandeStatus();
+            ds.setDemande(savedDevis.getDemande());
+            ds.setStatus(statusCree);
+            ds.setDate(LocalDateTime.now());
+            ds.setObservation(observation);
+            demandeStatusRepository.save(ds);
+        }
 
         return savedDevis;
     }

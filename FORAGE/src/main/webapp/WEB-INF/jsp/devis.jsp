@@ -31,6 +31,9 @@
         .form-group { margin-bottom: 10px; }
         .form-group label { display: inline-block; min-width: 120px; font-weight: bold; }
         .client-info { margin: 5px 0 0 125px; padding: 6px 12px; background: #e3f2fd; color: #1565C0; border-left: 3px solid #1565C0; border-radius: 3px; font-size: 14px; display: none; }
+        .btn-details { background: #1565C0; color: white; border: none; padding: 8px 14px; border-radius: 3px; cursor: pointer; font-size: 13px; margin-left: 5px; }
+        .btn-details:hover { background: #0D47A1; }
+        .info-error { margin: 5px 0 0 125px; padding: 6px 12px; background: #ffebee; color: #c62828; border-left: 3px solid #c62828; border-radius: 3px; font-size: 14px; display: none; }
     </style>
 </head>
 <body>
@@ -42,6 +45,7 @@
         <a href="/detailsdevis">Détails Devis</a>
         <a href="/status">Status</a>
         <a href="/demandestatus">Demande Status</a>
+        <a href="/detailsdevis/somme">chiffre d affaire</a>
     </div>
 
     <h1>Créer un Devis</h1>
@@ -49,14 +53,11 @@
     <form action="/devis" method="post" onsubmit="return validerFormulaire()">
 
         <div class="form-group">
-            <label>Demande:</label>
-            <select name="demande.id" id="demandeSelect" required onchange="afficherClient()">
-                <option value="">-- Choisir --</option>
-                <c:forEach var="d" items="${demandes}">
-                    <option value="${d.id}" data-client-nom="${d.client.nom}" data-client-contact="${d.client.contact}">#${d.id} - ${d.lieu}</option>
-                </c:forEach>
-            </select>
-            <div id="clientInfo" class="client-info"></div>
+            <label>Demande (ID):</label>
+            <input type="number" name="demande.id" id="demandeIdInput" min="1" required placeholder="ID de la demande" />
+            <button type="button" class="btn-details" onclick="chargerDemande()">Détails demande</button>
+            <div id="demandeInfo" class="client-info"></div>
+            <div id="demandeError" class="info-error"></div>
         </div>
 
         <div class="form-group">
@@ -78,7 +79,8 @@
         <div id="lignesContainer">
             <div class="ligne-detail">
                 <input type="text" name="ligneLibelle" placeholder="Libellé" required />
-                <input type="number" step="0.01" name="ligneMontant" placeholder="Montant" required oninput="calculerTotal()" />
+                <input type="number" step="0.01" name="ligneMontant" placeholder="Prix Unitaire" required oninput="calculerTotal()" />
+                <input type="number" name="ligneQuantite" placeholder="Qté" required min="1" value="1" oninput="calculerTotal()" style="width: 80px;" />
                 <button type="button" class="btn-remove" onclick="supprimerLigne(this)">−</button>
             </div>
         </div>
@@ -89,7 +91,12 @@
         </div>
         <input type="hidden" name="montantTotal" id="montantTotalHidden" value="0" />
 
-        <br/><br/>
+        <div class="form-group" style="margin-top: 15px;">
+            <label>Observation:</label>
+            <input type="text" name="observation" placeholder="Observation (optionnel)" style="width: 350px;" />
+        </div>
+
+        <br/>
         <input type="submit" value="Créer le Devis" />
     </form>
 
@@ -119,18 +126,36 @@
         // Date par défaut = aujourd'hui
         document.getElementById('dateField').valueAsDate = new Date();
 
-        function afficherClient() {
-            var select = document.getElementById('demandeSelect');
-            var info = document.getElementById('clientInfo');
-            var opt = select.options[select.selectedIndex];
-            if (opt.value) {
-                var nom = opt.getAttribute('data-client-nom');
-                var contact = opt.getAttribute('data-client-contact');
-                info.textContent = 'Client : ' + nom + (contact ? ' — ' + contact : '');
-                info.style.display = 'block';
-            } else {
-                info.style.display = 'none';
+        function chargerDemande() {
+            var idInput = document.getElementById('demandeIdInput');
+            var info = document.getElementById('demandeInfo');
+            var error = document.getElementById('demandeError');
+            var id = idInput.value;
+
+            info.style.display = 'none';
+            error.style.display = 'none';
+
+            if (!id || id <= 0) {
+                error.textContent = 'Veuillez entrer un ID valide';
+                error.style.display = 'block';
+                return;
             }
+
+            fetch('/api/devis/demande/' + id)
+                .then(function(response) {
+                    if (!response.ok) throw new Error('Demande introuvable');
+                    return response.json();
+                })
+                .then(function(data) {
+                    var text = 'Demande #' + data.id + ' — Lieu: ' + data.lieu + ' | Districk: ' + data.districk + ' | Date: ' + data.date;
+                    text += '\nClient : ' + data.clientNom + (data.clientContact ? ' — ' + data.clientContact : '');
+                    info.textContent = text;
+                    info.style.display = 'block';
+                })
+                .catch(function(err) {
+                    error.textContent = 'Demande #' + id + ' introuvable';
+                    error.style.display = 'block';
+                });
         }
 
         function ajouterLigne() {
@@ -139,7 +164,8 @@
             div.className = 'ligne-detail';
             div.innerHTML =
                 '<input type="text" name="ligneLibelle" placeholder="Libellé" required />' +
-                '<input type="number" step="0.01" name="ligneMontant" placeholder="Montant" required oninput="calculerTotal()" />' +
+                '<input type="number" step="0.01" name="ligneMontant" placeholder="Prix Unitaire" required oninput="calculerTotal()" />' +
+                '<input type="number" name="ligneQuantite" placeholder="Qté" required min="1" value="1" oninput="calculerTotal()" style="width: 80px;" />' +
                 '<button type="button" class="btn-remove" onclick="supprimerLigne(this)">−</button>';
             container.appendChild(div);
         }
@@ -156,11 +182,13 @@
 
         function calculerTotal() {
             var montants = document.getElementsByName('ligneMontant');
+            var quantites = document.getElementsByName('ligneQuantite');
             var total = 0;
             for (var i = 0; i < montants.length; i++) {
                 var val = parseFloat(montants[i].value);
+                var qte = parseFloat(quantites[i].value) || 1;
                 if (!isNaN(val)) {
-                    total += val;
+                    total += (val * qte);
                 }
             }
             document.getElementById('totalDisplay').textContent = total.toFixed(2);

@@ -34,10 +34,13 @@ public class DemandeService {
         return demandeRepository.findById(id);
     }
 
-    public Demande save(Demande demande) {
+    public Demande save(Demande demande, String observation) {
+        if (observation == null || observation.trim().isEmpty()) {
+            observation = "pas d'observation";
+        }
         Demande newDemande = demandeRepository.save(demande);
         Status statutCreate = statusService.findById(1).get();
-        DemandeStatus newDemandeStatus = new DemandeStatus(newDemande, statutCreate, LocalDateTime.now());
+        DemandeStatus newDemandeStatus = new DemandeStatus(newDemande, statutCreate, LocalDateTime.now(), observation);
         demandeStatusService.save(newDemandeStatus);
         return newDemande;
     }
