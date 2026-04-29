@@ -26,6 +26,10 @@ public class DevisController {
 
     @Autowired
     private DemandeService demandeService;
+
+    @Autowired
+    private com.noty.service.DetailsDevisService detailsDevisService;
+    
     double limite = 1000000;
     double remise = 10;
 
@@ -67,9 +71,8 @@ public class DevisController {
                 detail.setMontant(montantFinal);
                 detail.setQuantite(qte);
                 
-                // Calcul du total pour cette ligne : montant * quantité
-                BigDecimal totalLigne = montantFinal.multiply(BigDecimal.valueOf(qte));
-                total = total.add(totalLigne);
+                // montantFinal contient déjà prix * quantité
+                total = total.add(montantFinal);
                 
                 lignes.add(detail);
             }
@@ -84,5 +87,22 @@ public class DevisController {
     public String delete(@PathVariable int id) {
         devisService.deleteById(id);
         return "redirect:/devis";
+    }
+
+    @GetMapping("/demande/{demandeId}")
+    public String detailDemandeClient(@PathVariable int demandeId, Model model) {
+        model.addAttribute("demande", demandeService.findById(demandeId).orElse(null));
+        
+        List<Devis> devisList = devisService.findByDemandeId(demandeId);
+        List<DetailsDevis> allDetails = new ArrayList<>();
+        
+        // Parcourir tous les devis de cette demande et récupérer leurs détails
+        for (Devis devis : devisList) {
+            allDetails.addAll(detailsDevisService.findByDevisId(devis.getId()));
+        }
+        
+        model.addAttribute("devisList", devisList);
+        model.addAttribute("detailsDevisList", allDetails);
+        return "detaildemandeclient";
     }
 }

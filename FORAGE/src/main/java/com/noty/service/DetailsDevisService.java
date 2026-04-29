@@ -26,6 +26,10 @@ public class DetailsDevisService {
         return detailsDevisRepository.save(detailsDevis);
     }
 
+    public List<DetailsDevis> findByDevisId(int devisId) {
+        return detailsDevisRepository.findByDevisId(devisId);
+    }
+
     public void deleteById(int id) {
         detailsDevisRepository.deleteById(id);
     }

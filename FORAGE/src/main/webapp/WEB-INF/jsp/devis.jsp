@@ -45,7 +45,9 @@
         <a href="/detailsdevis">Détails Devis</a>
         <a href="/status">Status</a>
         <a href="/demandestatus">Demande Status</a>
+        <a href="/updatestatus">Update Status</a>
         <a href="/detailsdevis/somme">chiffre d affaire</a>
+        <a href="/couleur">Couleurs</a>
     </div>
 
     <h1>Créer un Devis</h1>

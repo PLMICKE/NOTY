@@ -30,7 +30,9 @@
         <a href="/detailsdevis">Détails Devis</a>
         <a href="/status">Status</a>
         <a href="/demandestatus">Demande Status</a>
+        <a href="/updatestatus">Update Status</a>
         <a href="/detailsdevis/somme">chiffre d affaire</a>
+        <a href="/couleur">Couleurs</a>
     </div>
 
     <h1>Suivi des Demandes (Status)</h1>
@@ -70,6 +72,8 @@
             <th>Status</th>
             <th>Date</th>
             <th>Observation</th>
+            <th>Nb Jours</th>
+            <th>Nb Jours Ouvrables</th>
             <th>Action</th>
         </tr>
         <c:forEach var="ds" items="${demandeStatusList}">
@@ -79,7 +83,12 @@
                 <td>${ds.status.libelle}</td>
                 <td>${ds.date}</td>
                 <td>${ds.observation}</td>
-                <td><a href="/demandestatus/delete/${ds.id}" onclick="return confirm('Supprimer?')">Supprimer</a></td>
+                <td style="background-color: ${couleurJoursMap[ds.id]};">${ds.nombreDeJours}</td>
+                <td style="background-color: ${couleurOuvrableMap[ds.id]};">${ds.nombreDeJoursOuvrable}</td>
+                <td>
+                    <a href="/demandestatus/edit/${ds.id}" style="color: #1565C0; margin-right: 10px;">Modifier</a>
+                    <a href="/demandestatus/delete/${ds.id}" onclick="return confirm('Supprimer?')">Supprimer</a>
+                </td>
             </tr>
         </c:forEach>
     </table>

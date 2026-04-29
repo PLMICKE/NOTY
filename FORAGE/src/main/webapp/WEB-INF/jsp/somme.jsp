@@ -1,3 +1,5 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,9 +32,35 @@
         <a href="/detailsdevis">Details Devis</a>
         <a href="/status">Status</a>
         <a href="/demandestatus">Demande Status</a>
+        <a href="/updatestatus">Update Status</a>
         <a href="/detailsdevis/somme">chiffre d affaire</a>
+        <a href="/couleur">Couleurs</a>
     </div>
-    <h1>total du montant des devis(chiffre d affaire)</h1>
-    <p>${somme}</p>
+    <h1>Tableau de bord</h1>
+
+    <h2>Chiffre d'affaires</h2>
+    <p style="font-size: 24px; font-weight: bold; color: #1565C0;">${somme}</p>
+
+    <h2>Nombre de clients</h2>
+    <!-- <p style="font-size: 24px; font-weight: bold; color: #E91E63;">${nbClients}</p> -->
+    <a href="/clients">
+    <button type="button">${nbClients}</button>
+    </a>
+
+    <h2>Statistiques par status</h2>
+    <table>
+        <tr>
+            <th>Status</th>
+            <th>Nombre de demandes</th>
+            <!-- <th>details</th> -->
+        </tr>
+        <c:forEach var="entry" items="${statsStatus}">
+            <tr>
+                <td>${entry.key}</td>
+                <td>${entry.value}</td>
+                <!-- <td><button type="button">details</button></td> -->
+            </tr>
+        </c:forEach>
+    </table>
 </body>
 </html>

@@ -3,22 +3,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Clients</title>
+    <title>Gestion des Couleurs</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
         h1 { color: #333; }
         table { border-collapse: collapse; width: 100%; margin-top: 20px; background: white; }
         th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
-        th { background-color: #4CAF50; color: white; }
+        th { background-color: #E91E63; color: white; }
         tr:hover { background-color: #f1f1f1; }
         form { background: white; padding: 20px; border-radius: 5px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         input[type="text"] { padding: 8px; margin: 5px; border: 1px solid #ddd; border-radius: 3px; }
-        input[type="submit"] { padding: 8px 20px; background: #4CAF50; color: white; border: none; border-radius: 3px; cursor: pointer; }
-        input[type="submit"]:hover { background: #45a049; }
+        input[type="submit"] { padding: 8px 20px; background: #E91E63; color: white; border: none; border-radius: 3px; cursor: pointer; }
+        input[type="submit"]:hover { background: #C2185B; }
         a { color: #e74c3c; text-decoration: none; }
         a:hover { text-decoration: underline; }
         .nav { margin-bottom: 20px; }
         .nav a { color: #4CAF50; margin-right: 15px; font-weight: bold; }
+        .color-preview { display: inline-block; width: 20px; height: 20px; border: 1px solid #ccc; vertical-align: middle; margin-right: 5px; border-radius: 3px; }
     </style>
 </head>
 <body>
@@ -31,36 +32,43 @@
         <a href="/status">Status</a>
         <a href="/demandestatus">Demande Status</a>
         <a href="/updatestatus">Update Status</a>
-        <a href="/detailsdevis/somme">chiffre d affaire</a>
         <a href="/couleur">Couleurs</a>
     </div>
 
-    <h1>Liste des Clients</h1>
+    <h1>Gestion des Couleurs</h1>
 
-    <form action="/clients" method="post">
-        <input type="hidden" name="id" value="${client.id}" />
-        <label>Nom:</label>
-        <input type="text" name="nom" value="${client.nom}" required />
-        <label>Contact:</label>
-        <input type="text" name="contact" value="${client.contact}" />
-        <input type="submit" value="Enregistrer" />
+    <form action="/couleur" method="post">
+        <label>Minimum (heures) :</label>
+        <input type="text" name="minimum" placeholder="ex: 0" required />
+
+        <label>Maximum (heures) :</label>
+        <input type="text" name="maximum" placeholder="ex: 8" required />
+
+        <label>Couleur (CSS) :</label>
+        <input type="text" name="loko" placeholder="ex: green, #FF0000" required />
+
+        <input type="submit" value="Ajouter" />
     </form>
 
     <table>
         <tr>
             <th>ID</th>
-            <th>Nom</th>
-            <th>Contact</th>
+            <th>Minimum</th>
+            <th>Maximum</th>
+            <th>Couleur</th>
+            <th>Aperçu</th>
             <th>Action</th>
         </tr>
-        <c:forEach var="c" items="${clients}">
+        <c:forEach var="c" items="${couleurList}">
             <tr>
                 <td>${c.id}</td>
-                <td>${c.nom}</td>
-                <td>${c.contact}</td>
-                <td><a href="/clients/delete/${c.id}" onclick="return confirm('Supprimer?')">Supprimer</a><a href="/clients/demandes/${c.id}" style="color: #1565C0; margin-left: 10px;">liste demande</a></td>
+                <td>${c.minimum}</td>
+                <td>${c.maximum}</td>
+                <td>${c.loko}</td>
+                <td><span class="color-preview" style="background-color: ${c.loko};"></span>${c.loko}</td>
+                <td><a href="/couleur/delete/${c.id}" onclick="return confirm('Supprimer?')">Supprimer</a></td>
             </tr>
-        </c:forEach>    
+        </c:forEach>
     </table>
 </body>
-</html
+</html>

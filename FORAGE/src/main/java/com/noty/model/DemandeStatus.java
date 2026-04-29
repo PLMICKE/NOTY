@@ -25,6 +25,12 @@ public class DemandeStatus {
     @Column(length = 500)
     private String observation;
 
+    @Column(nullable = true)
+    private Double nombreDeJours;
+
+    @Column(nullable = true)
+    private Double nombreDeJoursOuvrable;
+
     public DemandeStatus() {}
 
     public DemandeStatus(Demande demande, Status status, LocalDateTime date, String observation) {
@@ -48,4 +54,10 @@ public class DemandeStatus {
 
     public String getObservation() { return observation; }
     public void setObservation(String observation) { this.observation = observation; }
+
+    public Double getNombreDeJours() { return nombreDeJours; }
+    public void setNombreDeJours(Double nombreDeJours) { this.nombreDeJours = nombreDeJours; }
+
+    public Double getNombreDeJoursOuvrable() { return nombreDeJoursOuvrable; }
+    public void setNombreDeJoursOuvrable(Double nombreDeJoursOuvrable) { this.nombreDeJoursOuvrable = nombreDeJoursOuvrable; }
 }

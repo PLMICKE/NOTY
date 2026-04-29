@@ -1,0 +1,50 @@
+mrovoque
+    date 
+    obs
+
+ts mprovoque ligne vao2 
+    status
+
+-ajout bouton update
+
+
+statistique par status 
+status : nombre de demande lie a ce status
+status : nombre de demande lie a ce status
+status : nombre de demande lie a ce status
+
+
+
+
+
+        //dashboard par status
+        // statistique par status 
+        //     status : nombre de demande lie a ce status
+        //     status : nombre de demande lie a ce status
+        //     status : nombre de demande lie a ce status
+        // exemple cree : 5
+        //         devis preetude : 2
+
+
+
+
+cree moi une classe dans service 
+cette classe auras une fonction avec 2 argument (LocalDateTime a LocalDateTime b)
+
+cette fonction va juste calculer le nombre de date entre ces deux date , et le rendre 
+c sont return
+
+cree moi cette classe service alors et nomme le en : DateService
+
+
+
+
+la nouvelle chose qu on vas faire
+
+le grand defi , il y a plusieur maniere de toucher ou ajouter dans demande status
+tu vois par exemple si on cree une demande ,dans demandestatus il y aura une nouvelle ligne avec le status cree
+et pour la ligne cree , normalement les 2 colomne qu on vient d ajouter sont 0
+
+si on cree un devis lie a la demande il y aura une nouvelle ligne dans demande status , sauf que ici , on dois ajouter ca , recuperer tout demande status a cette demande selectionner 
+trier par id puis resuperer la date de cette demandestatus et calculer le nombre de jour entre cette date et celle saisi 
+on utilise les 2 fonction qu on a cree dans servise , puis inserer les resultat dans les 2 colomne de cette nouvelle ligne

@@ -36,6 +36,12 @@ public class DevisService {
     @Autowired
     private TypeDevisRepository typeDevisRepository;
 
+    @Autowired
+    private DateService dateService;
+
+    @Autowired
+    private DemandeStatusService demandeStatusService;
+
     public List<Devis> findAll() {
         return devisRepository.findAll();
     }
@@ -46,6 +52,10 @@ public class DevisService {
 
     public Devis save(Devis devis) {
         return devisRepository.save(devis);
+    }
+
+    public List<Devis> findByDemandeId(int demandeId) {
+        return devisRepository.findByDemandeId(demandeId);
     }
 
     public void deleteById(int id) {
@@ -82,9 +92,10 @@ public class DevisService {
             DemandeStatus ds = new DemandeStatus();
             ds.setDemande(savedDevis.getDemande());
             ds.setStatus(statusCree);
-            ds.setDate(LocalDateTime.now());
+            ds.setDate(savedDevis.getDate().atStartOfDay());
             ds.setObservation(observation);
-            demandeStatusRepository.save(ds);
+
+            demandeStatusService.save(ds);
         }
 
         return savedDevis;

@@ -40,9 +40,13 @@ public class DemandeService {
         }
         Demande newDemande = demandeRepository.save(demande);
         Status statutCreate = statusService.findById(1).get();
-        DemandeStatus newDemandeStatus = new DemandeStatus(newDemande, statutCreate, LocalDateTime.now(), observation);
+        DemandeStatus newDemandeStatus = new DemandeStatus(newDemande, statutCreate, newDemande.getDate().atStartOfDay(), observation);
         demandeStatusService.save(newDemandeStatus);
         return newDemande;
+    }
+
+    public List<Demande> findByClientId(int clientId) {
+        return demandeRepository.findByClientId(clientId);
     }
 
     public void deleteById(int id) {
