@@ -27,17 +27,15 @@ public class DemandeStatusService {
     }
 
     public DemandeStatus save(DemandeStatus demandeStatus) {
-        // Calcul automatique des jours pour TOUT save
         List<DemandeStatus> list = demandeStatusRepository.findByDemandeIdOrderByIdAsc(demandeStatus.getDemande().getId());
 
-        // Trouver le status précédent (celui juste avant dans la liste)
         LocalDateTime datePrecedente = null;
-        int indexCourant = -1; // ✅
+        int indexCourant = -1; 
 
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).getId() == demandeStatus.getId()) {
                 // C'est un update : on prend le status d'avant dans la liste
-                indexCourant = i; // ✅
+                indexCourant = i; 
                 if (i > 0) {
                     datePrecedente = list.get(i - 1).getDate();
                 }
@@ -45,7 +43,6 @@ public class DemandeStatusService {
             }
         }
 
-        // Si datePrecedente est null, c'est soit le premier, soit un nouveau
         if (datePrecedente == null) {
             if (list.isEmpty() || demandeStatus.getId() == 0) {
                 // Nouveau status : prendre le dernier existant
@@ -59,7 +56,6 @@ public class DemandeStatusService {
             demandeStatus.setNombreDeJours(dateService.nombreDeJours(datePrecedente, demandeStatus.getDate()));
             demandeStatus.setNombreDeJoursOuvrable(dateService.nombreDeJoursOuvrable(datePrecedente, demandeStatus.getDate()));
         } else {
-            // Tout premier status de cette demande
             demandeStatus.setNombreDeJours(0.0);
             demandeStatus.setNombreDeJoursOuvrable(0.0);
         }

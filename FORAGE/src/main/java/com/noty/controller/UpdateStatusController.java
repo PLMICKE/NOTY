@@ -44,6 +44,6 @@ public class UpdateStatusController {
         demandeStatus.setObservation(observation);
 
         demandeStatusService.save(demandeStatus);
-        return "redirect:/updatestatus";
+        return "redirect:/demandestatus";
     }
 }
